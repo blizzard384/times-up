@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <div class="col-lg-6 order-lg-1 showcase-text">
+                <h2>My team turn</h2>
+                <div class="alert alert-danger" role="alert" th:text="${param.error}" th:if="${param.error}"></div>
+                <p><b th:text="${game.getCurrentRound().getPlayerName()}"></b> from team my team is playing the turn. Guess the entry based on their description.</p>
+                <h3 th:text="'Remaining seconds ' + ${game.getCurrentRound().getRemainingTime() / 1000}"></h3>
+                <h3 th:text="'This round score ' + ${game.getCurrentRound().getCorrectEntries().size()}"></h3>
+            </div>
+            <div class="col-lg-6 order-lg-2 showcase-text">
+                <div th:replace="fragments/play :: score(game=${game}, player=${player})"></div>
+            </div>
+        </div>
+    </div>
+
+</html>

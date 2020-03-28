@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-light bg-light static-top" th:fragment="navigation-no-game">
+    <div class="container">
+        <a class="navbar-brand" href="/">Home</a>
+        <a class="btn btn-primary" href="/play">Play now!</a>
+    </div>
+</nav>
+<!-- Navigation -->
+<nav class="navbar navbar-light static-top" th:fragment="navigation">
+    <div class="container">
+        <a class="navbar-brand" href="/">Home</a>
+        <a class="navbar-brand" href="/leaveGame">Leave game</a>
+        <a class="btn btn-primary" href="/play">Play now!</a>
+    </div>
+</nav>
+<!-- Footer -->
+<footer class="footer bg-light" th:fragment="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+                <p class="text-muted small mb-4 mb-lg-0">&copy; Jan Berger 2019. All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
+

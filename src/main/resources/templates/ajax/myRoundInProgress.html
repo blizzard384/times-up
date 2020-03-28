@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <div class="col-lg-6 order-lg-1 showcase-text text-center">
+                <h2>Your turn in progress</h2>
+                <div class="alert alert-danger" role="alert" th:text="${param.error}" th:if="${param.error}"></div>
+                <p>Describe the entry to your team so they can guess it. When someone from your team guesses the correct entry, click on button correct entry. When you would like new term, click on button reject entry.</p>
+                <br>
+                <h2 th:text="${game.getCurrentRound().getRemainingTime() / 1000} + ' seconds'" id="remaining-time-countdown"></h2>
+                <div id="card-flipper" class="text-center mx-auto">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img src="img/mountain.jpg" alt="">
+                        </div>
+                        <div class="flip-card-back bg-light">
+                            <br>
+                            <h2 th:text="${game.getCurrentRound().getCurrentEntry()}"></h2>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <form method="GET" action="/correctEntry">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success btn-lg btn-block">Correct entry</button>
+                                </div>
+                                <input type="hidden" name="entry" th:value="${game.getCurrentRound().getCurrentEntry()}">
+
+                            </form>
+                            <form method="GET" action="/rejectEntry">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-danger btn-lg btn-block">Reject entry</button>
+                                </div>
+                                <input type="hidden" name="entry" th:value="${game.getCurrentRound().getCurrentEntry()}">
+                            </form>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <h2 th:text="'This round score ' + ${game.getCurrentRound().getCorrectEntries().size()}"></h2>
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-2 showcase-text">
+                <div th:replace="fragments/play :: score(game=${game}, player=${player})"></div>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript" id="page-js">
+    /*<![CDATA[*/
+        function startTimer(duration, display) {
+            var timer = duration;
+            setInterval(function () {
+                display.textContent = timer + ' seconds';
+
+                if (--timer < 0) {
+                    timer = 0;
+                }
+            }, 1000);
+        };
+        setTimeout(function() {
+            document.getElementById("card-flipper").classList.add("flip-card");
+        }, 200);
+        startTimer(/*[[${game.getCurrentRound().getRemainingTime() / 1000 - 1}]]*/, document.getElementById("remaining-time-countdown"));
+        setTimeout(function() {
+            document.location.reload();
+        }, /*[[${game.getCurrentRound().getRemainingTime()}]]*/);
+        /*]]>*/
+    </script>
+</html>

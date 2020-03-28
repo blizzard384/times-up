@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <div class="col-lg-6 order-lg-1 showcase-text">
+                <h2>Start new game</h2>
+                <div class="alert alert-danger" role="alert" th:text="${param.error}" th:if="${param.error}"></div>
+                <p class="lead mb-0">
+                <form method="GET" action="/leaveGame">
+                    <button type="submit" class="btn btn-primary">Start new game</button>
+                </form>
+                </p>
+            </div>
+            <div class="col-lg-6 order-lg-2 showcase-text">
+                <div th:replace="fragments/play :: score(game=${game}, player=${player})"></div>
+            </div>
+        </div>
+    </div>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <div class="col-lg-6 order-lg-1 showcase-text">
+                <h2>Waiting for others</h2>
+                <p>Waiting for other players to join. Only game host can start the game. After the game is started, no players are allowed to join.</p>
+                <div class="alert alert-danger" role="alert" th:text="${param.error}" th:if="${param.error}"></div>
+                <form method="GET" action="/startGame" th:if="${player.admin}">
+                    <button type="submit" value="Start game" class="btn btn-primary">Start game</button>
+                </form>
+            </div>
+            <div class="col-lg-6 order-lg-2 showcase-text">
+                <div th:replace="fragments/play :: roster(game=${game}, player=${player})"></div>
+            </div>
+        </div>
+    </div>
+</html>

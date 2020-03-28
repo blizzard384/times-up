@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Times up game</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
+          type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="css/landing-page.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/layout :: navigation">&nbsp;</div>
+<!-- Image Showcases -->
+<section class="showcase">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <div class="col-lg-6 order-lg-1 showcase-text custom-error-msg">
+                <div class="alert alert-danger" role="alert" th:text="${param.error}" th:if="${param.error}"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Image Showcases -->
+<section class="showcase">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <div class="col-lg-6 order-lg-1 showcase-text">
+                <h2>Game setup</h2>
+                <form method="GET" action="/doJoinSetupGame">
+                    <div class="form-group row" th:if="${!game.assignTeams}">
+                        <legend class="col-form-label col-sm-3 pt-0">Team</legend>
+                        <div class="col-sm-9">
+                            <div th:each="team : ${game.teams}" class="form-check">
+                                <input type="radio" name="teamName" th:id="${team.name}" th:value="${team.name}"  class="form-check-input" required>
+                                <label th:for="${team.name}" th:text="${team.name}" class="form-check-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="playerName" class="col-sm-3 col-form-label">Player name</label>
+                        <div class="col-sm-9">
+                        <input class="form-control" id="playerName" name="playerName" type="text" required>
+                        </div>
+                    </div>
+                    <br>
+                    <p>Set game session guessing entries. Entries need to be unique.</p>
+                    <div th:each="i : ${#numbers.sequence( 1, game.entriesPerPlayer, 1)}" class="form-group row">
+                        <label th:for="'gameEtry' + ${i}" th:text="'Entry ' + ${i}" class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                        <input class="form-control" th:id="'gameEtry' + ${i}" name="gameEntries" type="text" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-9">
+                            <button type="submit" class="btn btn-primary">Continue</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="play-content" class="col-lg-6 order-lg-2 showcase-text"></div>
+        </div>
+    </div>
+</section>
+<div th:replace="fragments/layout :: footer">&nbsp;</div>
+<!-- Bootstrap core JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="application/javascript">
+    function loadContent() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                document.getElementById("play-content").innerHTML = this.responseText;
+                eval(document.getElementById('page-js').innerHTML);
+            }
+        };
+        xhttp.open("GET", "/ajax/play", true);
+        xhttp.send();
+    }
+
+    loadContent();
+</script>
+<script type="application/javascript" th:if="${refresh}">
+    setInterval(function () {
+        loadContent();
+    }, 2000);
+</script>
+</body>
+</html>

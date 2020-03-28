@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<!-- roster -->
+<div th:fragment="roster(game, player)">
+    <h2 th:text="${game.getName()}"></h2>
+    <p th:text="'My name ' + ${player.playerName}" th:if="${player.playerName}"></p>
+    <p th:text="'My team ' + ${player.teamName}" th:if="${player.teamName}"></p>
+    <h2>Roster</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Team</th>
+            <th scope="col">Player</th>
+            <th scope="col" th:if="${player.isAdmin()}"></th>
+        </tr>
+        </thead>
+        <tr th:each="team: ${game.teamScores}">
+            <td th:text="${team.team}" />
+            <td>
+                <ul style="list-style-type: none;margin-left: -35px;">
+                    <li th:each="player : ${team.players}" th:text="${player.player}"></li>
+                </ul>
+            </td>
+            <td th:if="${player.isAdmin()}">
+                <ul style="list-style-type: none;margin-left: -35px;">
+                    <li th:each="tp : ${team.players}">
+                        <a th:href="'/kickPlayer?playerName=' + ${tp.player}" th:if="${tp.player != player.playerName && !tp.synthetic}">
+                            <svg class="bi bi-x-octagon-fill text-danger" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M11.46.146A.5.5 0 0011.107 0H4.893a.5.5 0 00-.353.146L.146 4.54A.5.5 0 000 4.893v6.214a.5.5 0 00.146.353l4.394 4.394a.5.5 0 00.353.146h6.214a.5.5 0 00.353-.146l4.394-4.394a.5.5 0 00.146-.353V4.893a.5.5 0 00-.146-.353L11.46.146zm.394 4.708a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708-.708L8.707 8l3.147-3.146z" clip-rule="evenodd"/>
+                            </svg>
+                        </a>
+                        &nbsp;
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>
+<!-- score -->
+<div th:fragment="score(game, player)">
+    <h2 th:text="${game.getName()}"></h2>
+    <p th:text="'Game phase ' + ${game.getPhase().getDisplayName()}" th:if="${game.getPhase()}"></p>
+    <p th:text="'My name ' + ${player.playerName}" th:if="${player.playerName}"></p>
+    <p th:text="'My team ' + ${player.teamName}" th:if="${player.teamName}"></p>
+    <p th:text="'Entries left in phase ' + ${game.getCurrentRound().getAvailableEntries().size()} + ' out of ' + ${game.getTotalEntries().size()}" th:if="${game.getCurrentRound()}"></p>
+    <h2>Score</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Team</th>
+            <th scope="col"></th>
+            <th scope="col">Player</th>
+            <th scope="col"></th>
+            <th scope="col" th:if="${player.isAdmin()}"></th>
+        </tr>
+        </thead>
+        <tr th:each="team: ${game.teamScores}">
+            <td th:text="${team.team}" />
+            <td th:text="${team.score}" />
+            <td>
+                <ul style="list-style-type: none;margin-left: -35px;">
+                    <li th:each="player : ${team.players}" th:text="${player.player}"></li>
+                </ul>
+            </td>
+            <td>
+                <ul style="list-style-type: none;margin-left: -35px;">
+                    <li th:each="player : ${team.players}" th:text="${player.score}"></li>
+                </ul>
+            </td>
+            <td th:if="${player.isAdmin()}">
+                <ul style="list-style-type: none;margin-left: -35px;">
+                    <li th:each="tp : ${team.players}">
+                        <a th:href="'/kickPlayer?playerName=' + ${tp.player}" th:if="${tp.player != player.playerName && !tp.synthetic}">
+                            <svg class="bi bi-x-octagon-fill text-danger" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M11.46.146A.5.5 0 0011.107 0H4.893a.5.5 0 00-.353.146L.146 4.54A.5.5 0 000 4.893v6.214a.5.5 0 00.146.353l4.394 4.394a.5.5 0 00.353.146h6.214a.5.5 0 00.353-.146l4.394-4.394a.5.5 0 00.146-.353V4.893a.5.5 0 00-.146-.353L11.46.146zm.394 4.708a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708-.708L8.707 8l3.147-3.146z" clip-rule="evenodd"/>
+                            </svg>
+                        </a>
+                        &nbsp;
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+

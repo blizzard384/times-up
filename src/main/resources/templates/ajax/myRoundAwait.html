@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <div class="col-lg-6 order-lg-1 showcase-text">
+                <h2>Waiting to start my turn</h2>
+                <div class="alert alert-danger" role="alert" th:text="${param.error}" th:if="${param.error}"></div>
+                <p>When ready press the button to start my turn. Your team will guess the entry based on your description.</p>
+                <form method="GET" action="/startRound">
+                    <button type="submit" class="btn btn-primary">Start round</button>
+                </form>
+            </div>
+            <div class="col-lg-6 order-lg-2 showcase-text">
+                <div th:replace="fragments/play :: score(game=${game}, player=${player})"></div>
+            </div>
+        </div>
+    </div>
+</html>

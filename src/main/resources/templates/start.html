@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Times up game</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet"
+          type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="css/landing-page.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/layout :: navigation-no-game">&nbsp&nbsp;</div>
+<!-- Image Showcases -->
+<section class="showcase">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <div class="col-lg-6 order-lg-1 showcase-text custom-error-msg">
+                <div class="alert alert-danger" role="alert" th:text="${param.error}" th:if="${param.error}"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Image Showcases -->
+<section class="showcase">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <div class="col-lg-6 order-lg-1 showcase-text">
+                <h2>Host game session</h2>
+                <p>Create game with given configuration. Other players can then join and select which team they would like to play in.</p>
+                <form method="GET" action="/createGame">
+                    <div class="form-group row">
+                        <label for="gameName" class="col-sm-3 col-form-label">Game name</label>
+                        <div class="col-sm-9">
+                        <input class="form-control" id="gameName" name="gameName" type="text" placeholder="My awesome game" required>
+                        <small class="form-text text-muted">Set your game session name so others can find it and join</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="teams1" class="col-sm-3 col-form-label">Team 1</label>
+                        <div class="col-sm-9">
+                        <input class="form-control" id="teams1" name="teams" type="text" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="teams2" class="col-sm-3 col-form-label">Team 2</label>
+                        <div class="col-sm-9">
+                        <input class="form-control" id="teams2" name="teams" type="text" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="description" class="col-sm-3 col-form-label">Game description</label>
+                        <div class="col-sm-9">
+                        <textarea class="form-control" id="description" name="description" placeholder="Movie characters"></textarea>
+                        <small class="form-text text-muted">Describe what entries are allowed</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-9">
+                        <a data-toggle="collapse" data-target="#demo" href="#">Game settings</a>
+                        </div>
+                    </div>
+                    <div id="demo" class="collapse">
+                        <div class="form-group row">
+                            <label for="round-time" class="col-sm-3 col-form-label">Round time</label>
+                            <div class="col-sm-9">
+                            <input class="form-control" id="round-time" name="roundTime" type="number" value="40" required>
+                            <small class="form-text text-muted">How much time there is for guessing each round (in seconds)</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="entries-count" class="col-sm-3 col-form-label">Entries per player</label>
+                            <div class="col-sm-9">
+                            <input class="form-control" id="entries-count" name="entriesPerPlayer" type="number" value="5" required>
+                            <small class="form-text text-muted">How many guessing entries each player has to provide</small>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-3">Assign teams</div>
+                            <div class="col-sm-9">
+                                <div class="form-check">
+                                <input class="form-check-input" id="assign-teams" name="assignTeams" value="true" type="checkbox" checked required>
+                                    <label class="form-check-label" for="assign-teams">
+                                        Assign players to teams randomly
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="form-group row">
+                    <div class="col-sm-9">
+                    <button type="submit" class="btn btn-primary">Create game</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div class="col-lg-6 order-lg-2 showcase-text">
+                <h2>Join game session</h2>
+                <p>Join game hosted by someone else. You will be able to select team you would like to play in.</p>
+                <form method="GET" action="/start">
+                    <button type="submit" class="btn btn-outline-secondary">Refresh</button>
+                </form>
+                <br>
+                <p class="text-muted small" th:if="${games.isEmpty()}">No hosted games to join. Host the game yourself!</p>
+                <table class="table table-striped" th:if="${!games.isEmpty()}">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Player count</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tr th:each="game: ${games}">
+                            <td th:text="${game.name}"/>
+                            <td th:text="${game.playerCount}"/>
+                            <td>
+                                <form method="GET" action="/joinGame">
+                                    <input type="hidden" name="gameId" th:value="${game.id}">
+                                    <button type="submit" class="btn btn-secondary">Join game</button>
+                                </form>
+                            </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<div th:replace="fragments/layout :: footer">&nbsp&nbsp;</div>
+<!-- Bootstrap core JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
